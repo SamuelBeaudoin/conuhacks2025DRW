@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Portfolio Analysis Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="layout-grid">
+            <div class="input-section">
+                <div class="card">
+                    <h1>Portfolio Analysis</h1>
+                    <div id="stockInputs"></div>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="addStockInput()">
+                            <i class="fas fa-plus"></i> Add Stock
+                        </button>
+                        <button class="btn btn-primary" onclick="analyzePortfolio()">
+                            <i class="fas fa-chart-line"></i> Analyze
+                        </button>
+                        <button class="btn btn-success" onclick="rebalancePortfolio()">
+                            <i class="fas fa-balance-scale"></i> Rebalance
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="analysis-section">
+                <div class="card">
+                    <h2>Correlation Matrix</h2>
+                    <div id="correlationMatrix" class="chart-container"></div>
+                </div>
+                
+                <div class="card">
+                    <h2>Weight Analysis</h2>
+                    <div id="weightAnalysis" class="weight-analysis"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
