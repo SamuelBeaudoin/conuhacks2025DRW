@@ -5,7 +5,8 @@ const WEIGHT_DIFFERENCE_THRESHOLDS = {
     LOW: 0.05      // Under 5% difference shows as green
 };
 
-function addStockInput() {
+// Modify addStockInput to accept default values for symbol and weight.
+function addStockInput(defaultSymbol = '', defaultWeight = '') {
   const container = document.getElementById('stockInputs');
   const inputGroup = document.createElement('div');
   inputGroup.className = 'stock-input';
@@ -14,12 +15,14 @@ function addStockInput() {
   symbolInput.type = 'text';
   symbolInput.placeholder = 'Symbol';
   symbolInput.className = 'symbol-input';
+  symbolInput.value = defaultSymbol;  // Set default symbol
 
   const weightInput = document.createElement('input');
   weightInput.type = 'number';
   weightInput.placeholder = 'Weight %';
   weightInput.className = 'weight-input';
   weightInput.step = '0.1';
+  weightInput.value = defaultWeight;  // Set default weight percentage
 
   const deleteBtn = document.createElement('button');
   deleteBtn.className = 'delete-btn';
@@ -463,9 +466,14 @@ function setupPerformanceDropdownListener() {
   });
 }
 
-// Initialize with two stock inputs.
-addStockInput();
-addStockInput();
+// ***** Initialization with default stocks *****
+// Default stocks: SPOT, SHOP, AMZN, MSFT, NVDA, GOOG, T.TO with equal weights.
+const defaultStocks = ['SPOT', 'SHOP', 'AMZN', 'MSFT', 'NVDA', 'GOOG', 'T.TO'];
+const defaultWeight = (100 / defaultStocks.length).toFixed(2); // Equal weight percentage for each
+
+defaultStocks.forEach(symbol => {
+  addStockInput(symbol, defaultWeight);
+});
 
 // Setup the dropdown listener to update performance data upon change.
 setupPerformanceDropdownListener();
