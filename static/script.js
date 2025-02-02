@@ -213,12 +213,21 @@ const WEIGHT_DIFFERENCE_THRESHOLDS = {
       data: {
         datasets: [{
           data: correlationData,
+          // Modify the background color: gray out diagonal points.
           backgroundColor: (context) => {
-            const value = context.raw.v;
-            if (value === 1) return 'rgb(46, 204, 113)';
-            if (value > 0.6) return 'rgb(231, 76, 60)';
-            if (value > 0.3) return 'rgb(241, 196, 15)';
-            return 'rgb(46, 204, 113)';
+            const { x, y, v } = context.raw;
+            // Gray out dots on the diagonal (self-correlation)
+            if (x === y) {
+              return 'rgba(200,200,200,0.4)';
+            }
+            // Use colors based on correlation value
+            if (v > 0.6) {
+              return 'rgb(231, 76, 60)';
+            } else if (v > 0.3) {
+              return 'rgb(241, 196, 15)';
+            } else {
+              return 'rgb(46, 204, 113)';
+            }
           },
           pointRadius: 15,
           pointHoverRadius: 20
@@ -227,21 +236,38 @@ const WEIGHT_DIFFERENCE_THRESHOLDS = {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: { padding: { left: 15, right: 15, top: 15, bottom: 15 } },
+        layout: {
+          padding: { left: 15, right: 15, top: 15, bottom: 15 }
+        },
         plugins: {
           tooltip: {
             callbacks: {
+              // Customize tooltip to show the two stock names and correlation.
               label: (context) => {
-                const value = context.raw.v;
-                return `Correlation: ${value.toFixed(2)}`;
+                const { x, y, v } = context.raw;
+                // Optionally, for diagonal points, display a custom message
+                if (x === y) {
+                  return `${x} vs. ${y}: Self-correlation (ignored)`;
+                }
+                return `${x} vs. ${y}: ${v.toFixed(2)}`;
               }
             }
           },
           legend: { display: false }
         },
         scales: {
-          x: { type: 'category', labels: labels, ticks: { padding: 10, autoSkip: false, font: { size: 11 } }, grid: { display: false } },
-          y: { type: 'category', labels: labels, ticks: { padding: 10, autoSkip: false, font: { size: 11 } }, grid: { display: false } }
+          x: {
+            type: 'category',
+            labels: labels,
+            ticks: { padding: 10, autoSkip: false, font: { size: 11 } },
+            grid: { display: false }
+          },
+          y: {
+            type: 'category',
+            labels: labels,
+            ticks: { padding: 10, autoSkip: false, font: { size: 11 } },
+            grid: { display: false }
+          }
         }
       }
     });
