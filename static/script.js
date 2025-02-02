@@ -215,6 +215,47 @@ function calculateBalancedWeights(weightAnalysis, weightingMethod) {
   return newWeights;
 }
 
+function getRebalanceRecommendation() {
+  const inputs = document.querySelectorAll('.stock-input');
+  const symbols = [];
+  const weights = [];
+
+  inputs.forEach(input => {
+    const symbol = input.querySelector('.symbol-input').value.toUpperCase();
+    const weight = parseFloat(input.querySelector('.weight-input').value);
+    if (symbol && !isNaN(weight)) {
+      symbols.push(symbol);
+      weights.push(weight / 100);
+    }
+  });
+
+  if (symbols.length < 2) {
+    alert('Please add at least 2 stocks to get a rebalance recommendation.');
+    return;
+  }
+
+  fetch('/rebalance_recommendation', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ symbols, weights })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      alert('Error: ' + data.error);
+    } else {
+      alert(`Recommended Rebalance Frequency: ${data.recommended_frequency}\n` +
+            `Approximately every ${data.recommended_rebalance_days} days.\n` +
+            `Average Daily Drift: ${data.avg_portfolio_drift}\n` +
+            `Drift Threshold: ${data.threshold}`);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Error fetching rebalance recommendation.');
+  });
+}
+
 function displayResults(data) {
   // Display correlation matrix.
   const correlationDiv = document.getElementById('correlationMatrix');

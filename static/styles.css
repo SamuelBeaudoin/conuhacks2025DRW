@@ -9,43 +9,43 @@
     --card-bg: #ffffff;
     --text-primary: #1e293b;
     --text-secondary: #64748b;
-  }
-  
-  body {
+}
+
+body {
     font-family: 'Inter', sans-serif;
     background-color: var(--light-bg);
     margin: 0;
     padding: 20px;
     color: var(--text-primary);
-  }
-  
-  .layout-grid {
+}
+
+.layout-grid {
     display: grid;
     grid-template-columns: minmax(300px, 350px) 1fr;
     gap: 24px;
-  }
-  
-  @media (max-width: 1024px) {
+}
+
+@media (max-width: 1024px) {
     .layout-grid {
       grid-template-columns: 1fr;
     }
     .input-section {
       position: static;
     }
-  }
-  
-  .input-section {
+}
+
+.input-section {
     position: sticky;
     top: 20px;
-  }
-  
-  .container {
+}
+
+.container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
-  }
-  
-  .card {
+}
+
+.card {
     background: var(--card-bg);
     border-radius: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -54,9 +54,9 @@
     transition: transform 0.2s ease;
     width: 100%;
     box-sizing: border-box;
-  }
-  
-  .stock-input {
+}
+
+.stock-input {
     display: grid;
     grid-template-columns: minmax(80px, 1fr) minmax(80px, 1fr) 40px;
     gap: 12px;
@@ -64,9 +64,9 @@
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-  }
-  
-  .stock-input input {
+}
+
+.stock-input input {
     width: 100%;
     padding: 12px;
     border: 1px solid #e2e8f0;
@@ -74,15 +74,15 @@
     font-size: 14px;
     transition: border-color 0.2s ease;
     box-sizing: border-box;
-  }
-  
-  .stock-input input:focus {
+}
+
+.stock-input input:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  }
-  
-  .delete-btn {
+}
+
+.delete-btn {
     background-color: var(--danger-color);
     color: white;
     width: 40px;
@@ -96,20 +96,20 @@
     justify-content: center;
     padding: 0;
     flex-shrink: 0;
-  }
-  
-  .delete-btn:hover {
+}
+
+.delete-btn:hover {
     background-color: #dc2626;
-  }
-  
-  .button-group {
+}
+
+.button-group {
     display: flex;
     gap: 12px;
     margin-top: 20px;
     flex-wrap: wrap;
-  }
-  
-  .btn {
+}
+
+.btn {
     padding: 12px 20px;
     border: none;
     border-radius: 8px;
@@ -120,114 +120,123 @@
     align-items: center;
     gap: 8px;
     white-space: nowrap;
-  }
-  
-  .btn-primary {
+}
+
+.btn-primary {
     background-color: var(--primary-color);
     color: white;
-  }
-  
-  .btn-primary:hover {
+}
+
+.btn-primary:hover {
     background-color: var(--secondary-color);
-  }
-  
-  .btn-secondary {
+}
+
+.btn-secondary {
     background-color: #e2e8f0;
     color: var(--text-primary);
-  }
-  
-  .btn-secondary:hover {
+}
+
+.btn-secondary:hover {
     background-color: #cbd5e1;
-  }
-  
-  .btn-success {
+}
+
+.btn-success {
     background-color: var(--success-color);
     color: white;
-  }
-  
-  .btn-success:hover {
+}
+
+.btn-success:hover {
     background-color: #16a34a;
-  }
-  
-  .weight-analysis {
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+}
+
+.weight-analysis {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-  }
-  
-  .weight-card {
+}
+
+.weight-card {
     background: #f8fafc;
     padding: 20px;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
-  }
-  
-  .chart-container {
+}
+
+.chart-container {
     height: 400px;
     margin: 20px 0;
     position: relative;
-  }
-  
-  /* Performance control styling */
-  .performance-controls {
+}
+
+/* Performance control styling */
+.performance-controls {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 10px;
-  }
-  
-  h1 {
+}
+
+h1 {
     font-size: 24px;
     margin-bottom: 24px;
     color: var(--text-primary);
-  }
-  
-  h2 {
+}
+
+h2 {
     font-size: 20px;
     margin-bottom: 20px;
     color: var(--text-primary);
-  }
-  
-  h3 {
+}
+
+h3 {
     margin-top: 0;
-  }
-  
-  .weight-difference {
+}
+
+.weight-difference {
     font-weight: 600;
     padding: 4px 8px;
     border-radius: 4px;
-  }
-  
-  .difference-high {
+}
+
+.difference-high {
     background-color: #fee2e2;
     color: #dc2626;
-  }
-  
-  .difference-medium {
+}
+
+.difference-medium {
     background-color: #ffedd5;
     color: #ea580c;
-  }
-  
-  .difference-low {
+}
+
+.difference-low {
     background-color: #dcfce7;
     color: #16a34a;
-  }
+}
 
-  /* Styles for the rebalance method dropdown container */
+/* Styles for the rebalance method dropdown container */
 .rebalance-method {
     margin: 16px 0;
     display: flex;
     flex-direction: column;
-  }
-  
-  .rebalance-method label {
+}
+
+.rebalance-method label {
     font-weight: 500;
     margin-bottom: 4px;
     font-size: 14px;
     color: var(--text-primary);
-  }
-  
-  .rebalance-method select {
+}
+
+.rebalance-method select {
     padding: 8px 12px;
     font-size: 14px;
     border: 1px solid #e2e8f0;
@@ -236,9 +245,9 @@
     background: var(--card-bg);
     color: var(--text-primary);
     transition: border-color 0.2s ease;
-  }
-  
-  .rebalance-method select:focus {
+}
+
+.rebalance-method select:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  }
+}

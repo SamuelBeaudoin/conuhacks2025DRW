@@ -90,6 +90,50 @@ def get_portfolio_performance(symbols, weights, start_date, end_date, yf_interva
 
     return portfolio
 
+def get_rebalance_recommendation(symbols, weights):
+    """
+    For each stock, compute the recent daily volatility (from 1-year historical data),
+    then approximate the portfolio drift as the weighted average volatility.
+    The threshold (here 10%) serves as the limit of allowed drift.
+    The recommended interval (in days) is threshold divided by avg drift.
+    A frequency recommendation is then provided.
+    """
+    total_weighted_vol = 0
+    for symbol, weight in zip(symbols, weights):
+        stock = yf.Ticker(symbol)
+        hist = stock.history(period="1y")
+        # Compute daily volatility as the standard deviation of daily returns.
+        vol = hist['Close'].pct_change().dropna().std() or 0.01  # default to 0.01 if zero
+        total_weighted_vol += weight * vol
+
+    # The portfolio’s average daily drift (percentage change) in weights.
+    avg_drift = total_weighted_vol  # since weights sum to 1, this is a weighted average.
+    # Set a threshold for how much drift is allowed (e.g. 10% drift)
+    threshold = 0.10
+    if avg_drift == 0:
+        recommended_days = 90  # fallback if no volatility detected.
+    else:
+        recommended_days = threshold / avg_drift
+
+    # Provide a friendly label based on the number of days
+    if recommended_days <= 7:
+         frequency = "Weekly"
+    elif recommended_days <= 30:
+         frequency = "Monthly"
+    elif recommended_days <= 90:
+         frequency = "Quarterly"
+    elif recommended_days <= 180:
+         frequency = "Semi-Annually"
+    else:
+         frequency = "Annually"
+
+    return {
+         "recommended_rebalance_days": int(round(recommended_days)),
+         "recommended_frequency": frequency,
+         "avg_portfolio_drift": round(avg_drift, 4),
+         "threshold": threshold
+    }
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -132,6 +176,17 @@ def performance():
         "dates": dates,
         "values": values
     })
+
+@app.route('/rebalance_recommendation', methods=['POST'])
+def rebalance_recommendation():
+    data = request.json
+    symbols = data.get('symbols', [])
+    weights = data.get('weights', [])
+    if not symbols or not weights or len(symbols) != len(weights):
+        return jsonify({"error": "Invalid symbols or weights."}), 400
+
+    recommendation = get_rebalance_recommendation(symbols, weights)
+    return jsonify(recommendation)
 
 if __name__ == '__main__':
     app.run(debug=True)
