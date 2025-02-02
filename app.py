@@ -11,6 +11,7 @@ def get_stock_data(symbols, weights):
     data = {}
     market_caps = {}
     prices = {}
+    volatilities = {}
 
     for symbol in symbols:
         stock = yf.Ticker(symbol)
@@ -19,12 +20,16 @@ def get_stock_data(symbols, weights):
         info = stock.info
         market_caps[symbol] = info.get('marketCap', 0)
         prices[symbol] = hist['Close'].iloc[-1]
+        # Compute volatility as the standard deviation of daily percent changes.
+        vol = hist['Close'].pct_change().dropna().std()
+        volatilities[symbol] = vol if vol is not None else 0
 
-    # Create correlation matrix
-    df = pd.DataFrame(data)
-    corr_matrix = df.corr()
+    # Compute correlation matrix from daily returns instead of closing price levels.
+    price_df = pd.DataFrame(data)
+    returns_df = price_df.pct_change().dropna()
+    corr_matrix = returns_df.corr()
 
-    # Analyze correlations
+    # Analyze correlations based on the daily returns correlation.
     correlation_flags = {}
     for i in range(len(symbols)):
         for j in range(i + 1, len(symbols)):
@@ -40,7 +45,7 @@ def get_stock_data(symbols, weights):
                     "value": corr
                 }
 
-    # Weight analysis
+    # Weight analysis remains unchanged.
     weight_analysis = {}
     total_market_cap = sum(market_caps.values()) if sum(market_caps.values()) else 1
 
@@ -50,7 +55,8 @@ def get_stock_data(symbols, weights):
             "assigned_weight": weight,
             "market_cap_weight": market_cap_weight,
             "price": prices[symbol],
-            "market_cap": market_caps[symbol]
+            "market_cap": market_caps[symbol],
+            "volatility": volatilities[symbol]
         }
 
     return {

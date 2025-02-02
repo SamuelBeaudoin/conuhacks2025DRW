@@ -16,6 +16,14 @@
         <div class="card">
           <h1>Portfolio Analysis</h1>
           <div id="stockInputs"></div>
+          <!-- Updated dropdown for selecting rebalancing method -->
+          <div class="rebalance-method" style="margin-bottom: 12px;">
+              <label for="rebalanceMethodSelect">Rebalance Method:</label>
+              <select id="rebalanceMethodSelect">
+                  <option value="marketCap">Market Cap Weight</option>
+                  <option value="equal">Equal Weight</option>
+              </select>
+          </div>
           <div class="button-group">
             <button class="btn btn-secondary" onclick="addStockInput()">
               <i class="fas fa-plus"></i> Add Stock
